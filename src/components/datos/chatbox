@@ -1,0 +1,108 @@
+import React, { useState } from 'react';
+
+ const App = () => {
+ const [isChatOpen, setIsChatOpen] = useState(false);
+ const [messages, setMessages] = useState([]);
+ const [input, setInput] = useState("");
+
+ // Toggle chat visibility
+ const toggleChat = () => {
+ setIsChatOpen(!isChatOpen);
+};
+
+  // Handles sending a user message
+  const handleSendMessage = () => {
+  if (input.trim() !== "") {
+  const newMessage = { text: input, sender: "user" };
+  setMessages([...messages, newMessage]);
+  setInput("");
+  handleBotResponse();
+  handleExternalMessage(newMessage); // Sends message to external handler
+}
+};
+
+  // Automatic bot responses after user message
+  const handleBotResponse = () => {
+  const botMessages = [
+  { text: "Bienvenido a GrupoCastroFallas", sender: "bot" },
+  { text: "Nuestro número es +506 7005-1261", sender: "bot" },
+  { text: "Nuestro número es 2272-6772", sender: "bot" },
+  { text: "Nuestro correo es info@grupocastrofallas.com", sender: "bot" }
+ ];
+
+    botMessages.forEach((response, index) => {
+    setTimeout(() => {
+    setMessages(prevMessages => [...prevMessages, response]);
+}, (index + 1) * 1000); // Delay of 1 second between each message
+});
+};
+
+  // Placeholder for external handling of the message
+  const handleExternalMessage = (message) => {
+  console.log("Message sent from ChatBox:", message);
+  // Future functionality: send this message to an API or external service
+};
+
+  return (
+  <div>
+  {/* Floating Button */}
+  <button
+  onClick={toggleChat}
+  style={{
+  position: 'fixed',
+  bottom: '20px',
+  right: '20px',
+  backgroundColor: '#007bff',
+  color: 'white',
+  borderRadius: '50%',
+  width: '60px',
+  height: '60px',
+  fontSize: '24px',
+  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)'
+}
+}
+  >
+  💬
+  </button>
+
+{/* Chatbox shown if isChatOpen is true */}
+{isChatOpen && (
+ <div style={{ position: 'fixed', bottom: '100px', right: '20px' }}>
+ <div className="bg-white border shadow-lg p-4 rounded-lg h-64 w-80">
+ <div className="h-48 overflow-y-scroll mb-4">
+ {messages.map((message, index) => (
+ <div
+ key={index}
+ className={`my-2 p-2 rounded-lg ${
+ message.sender === "user"
+? "bg-blue-500 text-white"
+: "bg-gray-300 text-black"
+}`}
+>
+{message.text}
+ </div>
+))}
+ </div>
+ <div className="flex">
+<input
+ className="flex-1 p-2 border rounded-lg"
+type="text"
+value={input}
+onChange={(e) => setInput(e.target.value)}
+placeholder="Escribe un mensaje..."
+/>
+ <button
+ className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
+ onClick={handleSendMessage}
+>
+ Enviar
+ </button>
+ </div>
+ </div>
+ </div>
+)}
+ </div>
+);
+};
+
+ export default App;
