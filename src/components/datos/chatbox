@@ -24,11 +24,10 @@ import React, { useState } from 'react';
   // Automatic bot responses after user message
   const handleBotResponse = () => {
   const botMessages = [
-  { text: "Bienvenido a GrupoCastroFallas", sender: "bot" },
-  { text: "Nuestro número es +506 7005-1261", sender: "bot" },
+  { text: "Bienvenido a GrupoCastroFallas le brindamos nuestra infromacion,instragram es aduaneracastrofallas", sender: "bot" },
+  { text: "Y nos puede contactar al número es +506 7005-1261 o 2272-6772 nuestro correo es  info@grupocastrofallas.com", sender: "bot" },
   { text: "Nuestro número es 2272-6772", sender: "bot" },
   { text: "Nuestro correo es info@grupocastrofallas.com", sender: "bot" }
-  { text: "Nuestro instragram es aduaneracastrofallas ", sender: "bot" }
  ];
 
     botMessages.forEach((response, index) => {
@@ -43,7 +42,7 @@ import React, { useState } from 'react';
   console.log("Message sent from ChatBox:", message);
   // Future functionality: send this message to an API or external service
 };
-
+//Visual modification of the chatbox
   return (
   <div>
   {/* Floating Button */}
@@ -105,5 +104,26 @@ placeholder="Escribe un mensaje..."
  </div>
 );
 };
+<input
+  style={styles.input}
+  value={input}
+  onChange={(e) => setInput(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' && input.trim()) {
+      handleSendMessage();  // Call the function that handles sending messages
+    }
+  }}
+  placeholder="Escribe un mensaje..."
+/>
+const handleSendMessage = () => {
+  setMessages([...messages, { text: input, sender: "user" }]);
+  setInput("");  // Clear input field
+  //icon
+const ChatBoxIcon = () => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+    <FontAwesomeIcon icon={faComments} style={{ fontSize: '24px', color: '#007bff' }} />
+    <span style={{ fontSize: '16px', color: '#333' }}>Chat</span>
+  </div>
+);
 
- export default App;
+};
