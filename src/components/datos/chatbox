@@ -28,6 +28,7 @@ import React, { useState } from 'react';
   { text: "Nuestro número es +506 7005-1261", sender: "bot" },
   { text: "Nuestro número es 2272-6772", sender: "bot" },
   { text: "Nuestro correo es info@grupocastrofallas.com", sender: "bot" }
+  { text: "Nuestro instragram es aduaneracastrofallas ", sender: "bot" }
  ];
 
     botMessages.forEach((response, index) => {
