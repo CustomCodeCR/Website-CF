@@ -56,12 +56,6 @@ const NavBar = () => {
     ? "top-0 xl:static flex-1 flex flex-col xl:flex-row items-center justify-center gap-10 transition-all duration-500 z-50"
     : "hidden";
 
-  const renderAuthOptions = () => {
-    <Link to="https://dashboard.logisticacastrofallas.com" onClick={closeMenu}>
-      <img src="../on-off.png" alt="Iniciar sesión" className="w-6 h-6 mr-2" />
-    </Link>;
-  };
-
   return (
     <>
       <div
@@ -95,16 +89,6 @@ const NavBar = () => {
           <nav
             className={`bg-[#eeeff2] text-black ${mobileMenuStyles} flex-1 mb-10`}
           >
-            <Link
-              to="https://dashboard.logisticacastrofallas.com"
-              onClick={closeMenu}
-            >
-              <img
-                src="../on-off.png"
-                alt="Iniciar sesión"
-                className="w-6 h-6 mr-2"
-              />
-            </Link>
             <Link
               onClick={() => scrollToSection("servicios")}
               className={`${selectedOption === "servicios" ? "underline" : ""}`}
@@ -156,6 +140,22 @@ const NavBar = () => {
                   </Link>
                 </div>
               )}
+            </div>
+            <div className="flex flex-col items-center gap-4 mt-4">
+              <Link
+                to="https://dashboard.logisticacastrofallas.com"
+                className="text-blue-500 hover:underline"
+                onClick={closeMenu}
+              >
+                Inicio de sesión clientes
+              </Link>
+              <Link
+                to="/administrativos"
+                className="text-blue-500 hover:underline"
+                onClick={closeMenu}
+              >
+                Inicio de sesión administrativos
+              </Link>
             </div>
           </nav>
         )}
@@ -213,45 +213,20 @@ const NavBar = () => {
           >
             Contacto
           </Link>
-          <div className="relative">
-            <button
-              onClick={() => setShowBlogDropdown(!showBlogDropdown)}
-              className="focus:outline-none"
+          <div className="flex gap-4">
+            <Link
+              to="https://dashboard.logisticacastrofallas.com"
+              className="text-blue-500 hover:underline"
             >
-              Blog
-            </button>
-            {showBlogDropdown && (
-              <div className="absolute mt-2 w-40 bg-white border border-gray-300 shadow-lg rounded-md">
-                <Link
-                  to="https://blog.logisticacastrofallas.com"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >
-                  Noticias
-                </Link>
-                <Link
-                  to="https://blog.logisticacastrofallas.com/#/empleo"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >
-                  Trabaja con nosotros
-                </Link>
-              </div>
-            )}
+              Inicio de sesión clientes
+            </Link>
+            <Link
+              to="/administrativos"
+              className="text-blue-500 hover:underline"
+            >
+              Inicio de sesión administrativos
+            </Link>
           </div>
-        </div>
-        <div
-          className="w-[350px] h-[54px] flex items-center justify-center text-center text-black text-lg font-medium my-auto lg:mr-[-20px] mr-[0px]"
-          style={{ fontFamily: "'fuente', sans-serif" }}
-        >
-          <Link
-            to="https://dashboard.logisticacastrofallas.com"
-            onClick={closeMenu}
-          >
-            <img
-              src="../on-off.png"
-              alt="Iniciar sesión"
-              className="w-6 h-6 mr-2"
-            />
-          </Link>
         </div>
       </nav>
     </>
