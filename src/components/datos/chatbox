@@ -116,7 +116,7 @@ placeholder="Escribe un mensaje..."
 const handleSendMessage = () => {
   setMessages([...messages, { text: input, sender: "user" }]);
   setInput("");  // Clear input field
-  //icon de la web
+  //icon de la web cambio
 const ChatBoxIcon = () => (
   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
     <FontAwesomeIcon icon={faComments} style={{ fontSize: '24px', color: '#007bff' }} />
