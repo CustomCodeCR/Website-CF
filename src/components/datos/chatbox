@@ -26,8 +26,6 @@ import React, { useState } from 'react';
   const botMessages = [
   { text: "Bienvenido a GrupoCastroFallas le brindamos nuestra infromacion,instragram es aduaneracastrofallas", sender: "bot" },
   { text: "Y nos puede contactar al número es +506 7005-1261 o 2272-6772 nuestro correo es  info@grupocastrofallas.com", sender: "bot" },
-  { text: "Nuestro número es 2272-6772", sender: "bot" },
-  { text: "Nuestro correo es info@grupocastrofallas.com", sender: "bot" }
  ];
 
     botMessages.forEach((response, index) => {
@@ -118,7 +116,7 @@ placeholder="Escribe un mensaje..."
 const handleSendMessage = () => {
   setMessages([...messages, { text: input, sender: "user" }]);
   setInput("");  // Clear input field
-  //icon
+  //icon de la web
 const ChatBoxIcon = () => (
   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
     <FontAwesomeIcon icon={faComments} style={{ fontSize: '24px', color: '#007bff' }} />
