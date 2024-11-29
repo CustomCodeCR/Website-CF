@@ -1,123 +1,146 @@
-import React, { useState } from 'react';
-
- const App = () => {
- const [isChatOpen, setIsChatOpen] = useState(false);
- const [messages, setMessages] = useState([]);
- const [input, setInput] = useState("");
-
- // Toggle chat visibility
- const toggleChat = () => {
- setIsChatOpen(!isChatOpen);
-};
-
-  // Handles sending a user message
+import { useState } from "react";
+//Mejore el button y el imput
+const Chatbox = () => {
+  const [messages, setMessages] = useState([]), [input, setInput] = useState("");
   const handleSendMessage = () => {
-  if (input.trim() !== "") {
-  const newMessage = { text: input, sender: "user" };
-  setMessages([...messages, newMessage]);
-  setInput("");
-  handleBotResponse();
-  handleExternalMessage(newMessage); // Sends message to external handler
-}
-};
+    if (!input.trim()) return;
+    setMessages([...messages, { text: input, sender: "user" }]);
+    setTimeout(() => setMessages((m) => [...m, { text: "Respuesta automática", sender: "bot" }]), 500);
+    setInput("");
+  };
 
-  // Automatic bot responses after user message
-  const handleBotResponse = () => {
-  const botMessages = [
-  { text: "Bienvenido a GrupoCastroFallas le brindamos nuestra infromacion,instragram es aduaneracastrofallas", sender: "bot" },
-  { text: "Y nos puede contactar al número es +506 7005-1261 o 2272-6772 nuestro correo es  info@grupocastrofallas.com", sender: "bot" },
- ];
-
-    botMessages.forEach((response, index) => {
-    setTimeout(() => {
-    setMessages(prevMessages => [...prevMessages, response]);
-}, (index + 1) * 1000); // Delay of 1 second between each message
-});
-};
-
-  // Placeholder for external handling of the message
-  const handleExternalMessage = (message) => {
-  console.log("Message sent from ChatBox:", message);
-  // Future functionality: send this message to an API or external service
-};
-//Visual modification of the chatbox
   return (
-  <div>
-  {/* Floating Button */}
-  <button
-  onClick={toggleChat}
-  style={{
-  position: 'fixed',
-  bottom: '20px',
-  right: '20px',
-  backgroundColor: '#007bff',
-  color: 'white',
-  borderRadius: '50%',
-  width: '60px',
-  height: '60px',
-  fontSize: '24px',
-  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)'
-}
-}
-  >
-  💬
-  </button>
-
-{/* Chatbox shown if isChatOpen is true */}
-{isChatOpen && (
- <div style={{ position: 'fixed', bottom: '100px', right: '20px' }}>
- <div className="bg-white border shadow-lg p-4 rounded-lg h-64 w-80">
- <div className="h-48 overflow-y-scroll mb-4">
- {messages.map((message, index) => (
- <div
- key={index}
- className={`my-2 p-2 rounded-lg ${
- message.sender === "user"
-? "bg-blue-500 text-white"
-: "bg-gray-300 text-black"
-}`}
->
-{message.text}
- </div>
-))}
- </div>
- <div className="flex">
-<input
- className="flex-1 p-2 border rounded-lg"
-type="text"
-value={input}
-onChange={(e) => setInput(e.target.value)}
-placeholder="Escribe un mensaje..."
-/>
- <button
- className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
- onClick={handleSendMessage}
->
- Enviar
- </button>
- </div>
- </div>
- </div>
-)}
- </div>
-);
+    <div style={{ maxWidth: "400px", margin: "auto" }}>
+      <div style={{ border: "1px solid #ccc", height: "300px", overflowY: "auto", marginBottom: "10px", padding: "10px" }}>
+        {messages.map((msg, i) => (
+          <div key={i} style={{ textAlign: msg.sender === "user" ? "right" : "left" }}>
+            <div style={{
+              display: "inline-block", padding: "8px", borderRadius: "5px",
+              background: msg.sender === "user" ? "#0084ff" : "#f1f1f1", color: msg.sender === "user" ? "#fff" : "#000"
+            }}>{msg.text}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: "10px" }}>
+        <input style={{ flex: 1, padding: "10px" }} value={input} onChange={(e) => setInput(e.target.value)} />
+        <button style={{ padding: "10px", background: "#0084ff", color: "#fff" }} onClick={handleSendMessage}>Enviar</button>
+      </div>
+    </div>
+  );
 };
-<input
-  style={styles.input}
-  value={input}
-  onChange={(e) => setInput(e.target.value)}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter' && input.trim()) {
-      handleSendMessage();  // Call the function that handles sending messages
-    }
-  }}
-  placeholder="Escribe un mensaje..."
-/>
-const handleSendMessage = () => {
-  setMessages([...messages, { text: input, sender: "user" }]);
-  setInput("");  // Clear input field
-  //icon de la web cambio
+  const handleBotResponse = () => {
+    // Mensajes automáticos de respuesta personalizados con el nombre "GrupoCastroFallas"
+    const responses = [
+    { text: "Bienvenido a GrupoCastroFallas le brindamos nuestra infromacion,instragram es aduaneracastrofallas", sender: "bot" },
+  { text: "Y nos puede contactar al número es +506 7005-1261 o 2272-6772 nuestro correo es  info@grupocastrofallas.com", sender: "bot" },
+//informacion mas comoda
+    ];
+    // Add answers
+    responses.forEach((response, index) => {
+      setTimeout(() => {
+        setMessages(prevMessages => [...prevMessages, response]);
+      }, (index + 1) * 1000);import { useState } from 'react';
+// Incrementar el tiempo de respuesta en 1 segundo por cada mensaje
+      function Formulario() {
+        const [mensaje, setMensaje] = useState('');
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          // Lógica para enviar el mensaje
+          setMensaje('');
+        };
+        const handleKeyPress = (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            // Llamar a la función de envío
+          }
+        };
+        return (
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={mensaje}
+              onChange={(e) => setMensaje(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Escribe aquí..."
+            />
+            <button type="submit">Enviar</button>
+          </form>
+        );
+      }
+      import { useState } from 'react';
 
-);
-
+      function Formulario() {
+        const [mensaje, setMensaje] = useState('');
+      
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          // Lógica para enviar el mensaje
+          setMensaje('');
+        };
+      
+        const handleInput = (e) => {
+          const textarea = e.target;
+          // Ajusta la altura del textarea según el contenido
+          textarea.style.height = 'auto'; // Restablece la altura para el redimensionamiento
+          textarea.style.height = `${textarea.scrollHeight}px`; // Establece la altura dinámica
+        };
+      
+        return (
+          <form onSubmit={handleSubmit}>
+            <textarea
+              value={mensaje}
+              onChange={(e) => setMensaje(e.target.value)}
+              onInput={handleInput}
+              placeholder="Escribe aquí..."
+              style={{ width: '100%', resize: 'none' }} // Elimina el redimensionamiento manual
+            />
+            <button type="submit">Enviar</button>
+          </form>
+        );
+      }
+      
+      export default Formulario;
+      
+    });
+  };
+  return (
+    <div className="bg-gray-100 p-4 rounded-lg w-full max-w-lg mx-auto mt-10 shadow-lg">
+      <h2 className="text-xl font-bold mb-4 text-center">Buenas,Bienvenido a CastroFallasSA se le enviara nuestros datos para un mejor contacto </h2>
+      <div className="h-64 overflow-y-scroll bg-white p-4 rounded-lg shadow-inner">
+        {messages.map((message, index) => (
+          <div key={index} className={`my-2 p-2 rounded-lg ${message.sender === "user" ? "bg-blue-500 text-white" : "bg-gray-300 text-black"}`}>
+            {message.text}
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 flex">
+        <input 
+          className="flex-1 p-2 border border-gray-300 rounded-lg shadow-inner" 
+          type="text" 
+          value={input} 
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Escribe tu mensaje..."
+        />
+        <button 
+          className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg" 
+          onClick={handleSendMessage}
+        >
+          Enviar
+        </button>
+      </div>
+    </div>
+  );
 };
+export default Chatbox;
+import React from 'react';
+import Chatbox from './components/Chatbox';
+function App() {
+  return (
+    <div className="ChatboxCastroFallasSA">
+      <Chatbox />
+    </div>
+    git flow feature start Chatbox;
+  );
+}
+export default App;
+npm start
