@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { RiCloseLine, RiMenu3Fill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,25 +8,18 @@ const NavBar = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [showBlogDropdown, setShowBlogDropdown] = useState(false);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   const handleScroll = () => {
-    if (window.scrollY > 0) {
-      setNavbarFixed(true);
-    } else {
-      setNavbarFixed(false);
-    }
+    setNavbarFixed(window.scrollY > 0);
   };
 
   const scrollToSection = (sectionId) => {
     const navbarHeight = 69;
-
     if (sectionId) {
       const section = document.getElementById(sectionId);
       const sectionPosition = section.offsetTop - navbarHeight;
-      window.scrollTo({
-        top: sectionPosition,
-        behavior: "smooth",
-      });
+      window.scrollTo({ top: sectionPosition, behavior: "smooth" });
       setSelectedOption(sectionId);
       setShowMenu(false);
     }
@@ -37,7 +30,6 @@ const NavBar = () => {
   };
 
   const user = JSON.parse(localStorage.getItem("users")) || {};
-
   const { given_name } = user;
 
   const logout = () => {
@@ -45,19 +37,23 @@ const NavBar = () => {
     navigate("/login");
   };
 
+  // Detectar clics fuera del dropdown
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowBlogDropdown(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  const mobileMenuStyles = showMenu
-    ? "top-0 xl:static flex-1 flex flex-col xl:flex-row items-center justify-center gap-10 transition-all duration-500 z-50"
-    : "hidden";
-
   return (
     <>
+      {/* Navbar Mobile */}
       <div
         className={`md:hidden flex flex-col items-center ${
           navbarFixed
@@ -86,38 +82,34 @@ const NavBar = () => {
           </button>
         </div>
         {showMenu && (
-          <nav
-            className={`bg-[#eeeff2] text-black ${mobileMenuStyles} flex-1 mb-10`}
-          >
+          <nav className="bg-[#eeeff2] text-black flex flex-col items-center gap-4 mb-10 w-full">
             <Link
               onClick={() => scrollToSection("servicios")}
               className={`${selectedOption === "servicios" ? "underline" : ""}`}
-              style={{ fontFamily: "'fuente', sans-serif" }}
             >
               Servicios
             </Link>
             <Link
               onClick={() => scrollToSection("nosotros")}
               className={`${selectedOption === "nosotros" ? "underline" : ""}`}
-              style={{ fontFamily: "'fuente', sans-serif" }}
             >
               Nosotros
             </Link>
             <Link
               onClick={() => scrollToSection("impacto")}
               className={`${selectedOption === "impacto" ? "underline" : ""}`}
-              style={{ fontFamily: "'fuente', sans-serif" }}
             >
               Impacto industrial
             </Link>
             <Link
               onClick={() => scrollToSection("contacto")}
               className={`${selectedOption === "contacto" ? "underline" : ""}`}
-              style={{ fontFamily: "'fuente', sans-serif" }}
             >
               Contacto
             </Link>
-            <div className="relative">
+
+            {/* Blog Dropdown */}
+            <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowBlogDropdown(!showBlogDropdown)}
                 className="focus:outline-none"
@@ -125,7 +117,7 @@ const NavBar = () => {
                 Blog
               </button>
               {showBlogDropdown && (
-                <div className="absolute mt-2 w-40 bg-white border border-gray-300 shadow-lg rounded-md">
+                <div className="absolute mt-2 w-40 bg-white border border-gray-300 shadow-lg rounded-md z-50">
                   <Link
                     to="https://blog.logisticacastrofallas.com"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
@@ -141,6 +133,7 @@ const NavBar = () => {
                 </div>
               )}
             </div>
+
             <div className="flex flex-col items-center gap-4 mt-4">
               <Link
                 to="https://dashboard.logisticacastrofallas.com"
@@ -161,6 +154,7 @@ const NavBar = () => {
         )}
       </div>
 
+      {/* Navbar Desktop */}
       <nav
         className={`hidden md:flex justify-center ${
           navbarFixed
@@ -178,41 +172,56 @@ const NavBar = () => {
             />
           </Link>
           <Link
-            className={`${
-              selectedOption === "servicios" ? "underline" : ""
-            } text-black text-lg font-medium transition-colors hover:underline`}
-            style={{ fontFamily: "'fuente', sans-serif" }}
             onClick={() => scrollToSection("servicios")}
+            className={`${selectedOption === "servicios" ? "underline" : ""}`}
           >
             Servicios
           </Link>
           <Link
-            className={`${
-              selectedOption === "nosotros" ? "underline" : ""
-            } text-black text-lg font-medium transition-colors hover:underline`}
-            style={{ fontFamily: "'fuente', sans-serif" }}
             onClick={() => scrollToSection("nosotros")}
+            className={`${selectedOption === "nosotros" ? "underline" : ""}`}
           >
             Nosotros
           </Link>
           <Link
-            className={`${
-              selectedOption === "impacto" ? "underline" : ""
-            } text-black text-lg font-medium transition-colors hover:underline`}
-            style={{ fontFamily: "'fuente', sans-serif" }}
             onClick={() => scrollToSection("impacto")}
+            className={`${selectedOption === "impacto" ? "underline" : ""}`}
           >
             Impacto industrial
           </Link>
           <Link
-            className={`${
-              selectedOption === "contacto" ? "underline" : ""
-            } text-black text-lg font-medium transition-colors hover:underline`}
-            style={{ fontFamily: "'fuente', sans-serif" }}
             onClick={() => scrollToSection("contacto")}
+            className={`${selectedOption === "contacto" ? "underline" : ""}`}
           >
             Contacto
           </Link>
+
+          {/* Blog Dropdown Desktop */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setShowBlogDropdown(!showBlogDropdown)}
+              className="focus:outline-none"
+            >
+              Blog
+            </button>
+            {showBlogDropdown && (
+              <div className="absolute mt-2 w-40 bg-white border border-gray-300 shadow-lg rounded-md z-50">
+                <Link
+                  to="https://blog.logisticacastrofallas.com"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                >
+                  Noticias
+                </Link>
+                <Link
+                  to="https://blog.logisticacastrofallas.com/#/empleo"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                >
+                  Trabaja con nosotros
+                </Link>
+              </div>
+            )}
+          </div>
+
           <div className="flex gap-4">
             <Link
               to="https://dashboard.logisticacastrofallas.com"
